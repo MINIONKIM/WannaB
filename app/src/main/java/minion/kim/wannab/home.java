@@ -1,16 +1,29 @@
 package minion.kim.wannab;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.mikepenz.materialdrawer.*;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+
 
 public class home extends Activity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("hello");
+
         super.onCreate(savedInstanceState);
+        startActivity(new Intent(this, Splash.class));
         setContentView(R.layout.activity_home);
+        Drawer drawer = new DrawerBuilder()
+                .withActivity(this)
+                .addDrawerItems(
+                        item1,
+                        new DividerDrawerItem()
+                ).build();
     }
 
     @Override
