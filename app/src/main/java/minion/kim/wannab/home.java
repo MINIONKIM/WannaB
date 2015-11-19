@@ -3,27 +3,57 @@ package minion.kim.wannab;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.*;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 
 public class home extends Activity {
+
+    private AccountHeader headerResult = null;
+    private Drawer result = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("hello");
+
+        PrimaryDrawerItem home = new PrimaryDrawerItem().withName("홈").withIdentifier(0);
+        PrimaryDrawerItem cart = new PrimaryDrawerItem().withName("장바구니").withIdentifier(1);
+
+        final IProfile profile = new ProfileDrawerItem().withName("MINION").withEmail("minionkim@outlook.com").withIcon("https://avatars3.githubusercontent.com/u/1476232?v=3&s=460").withIdentifier(100);
 
         super.onCreate(savedInstanceState);
-        startActivity(new Intent(this, Splash.class));
+        //startActivity(new Intent(this, Splash.class));
         setContentView(R.layout.activity_home);
-        Drawer drawer = new DrawerBuilder()
+
+        headerResult = new AccountHeaderBuilder()           // 헤더 부분
                 .withActivity(this)
+                .withHeaderBackground(R.drawable.header)
+                .addProfiles(
+                        profile
+                )
+                .withSavedInstance(savedInstanceState)
+                .build();
+
+        Drawer drawer = new DrawerBuilder() // drawer 빌드.
+                .withActivity(this)
+                .withAccountHeader(headerResult)
                 .addDrawerItems(
-                        item1,
+                        home,
+                        cart,
                         new DividerDrawerItem()
-                ).build();
+                )
+
+                .build();
     }
 
     @Override
