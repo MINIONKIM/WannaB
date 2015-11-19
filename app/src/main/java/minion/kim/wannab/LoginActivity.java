@@ -40,6 +40,7 @@ public class LoginActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startActivity(new Intent(this, Splash.class));
         setContentView(R.layout.activity_login);
 
         inputEmail = (EditText) findViewById(R.id.email);

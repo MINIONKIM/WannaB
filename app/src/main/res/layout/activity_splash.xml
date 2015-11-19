@@ -4,23 +4,4 @@ android:orientation="vertical" android:layout_width="match_parent"
 android:layout_height="match_parent"
     android:background = "@drawable/splash">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/UID" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/PWD"
-        android:layout_gravity="center_horizontal" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="로그인"
-        android:id="@+id/button_login"
-        android:layout_gravity="center_horizontal" />
 </LinearLayout>

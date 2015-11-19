@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,16 +24,24 @@ public class home extends Activity {
     private AccountHeader headerResult = null;
     private Drawer result = null;
 
+    private SQLiteHandler db;
+    private SessionManager session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        PrimaryDrawerItem home = new PrimaryDrawerItem().withName("홈").withIdentifier(0);
-        PrimaryDrawerItem cart = new PrimaryDrawerItem().withName("장바구니").withIdentifier(1);
+        db = new SQLiteHandler((getApplicationContext()));
+        session = new SessionManager(getApplicationContext());
 
-        final IProfile profile = new ProfileDrawerItem().withName("MINION").withEmail("minionkim@outlook.com").withIcon("https://avatars3.githubusercontent.com/u/1476232?v=3&s=460").withIdentifier(100);
+        if(!session.isLoggedIn()){ logoutUser();}
+
+        PrimaryDrawerItem home = new PrimaryDrawerItem().withName("홈").withIdentifier(0).withIcon(R.drawable.home);
+        PrimaryDrawerItem cart = new PrimaryDrawerItem().withName("장바구니").withIdentifier(1).withIcon(R.drawable.cart);
+        PrimaryDrawerItem logout = new PrimaryDrawerItem().withName("로그아웃").withIdentifier(2).withIcon(R.drawable.exit);
+
+        final IProfile profile = new ProfileDrawerItem().withName("WannaBe").withEmail("wannabe@inu.ac.kr").withIcon(R.drawable.ic_launcher).withIdentifier(100);
 
         super.onCreate(savedInstanceState);
-        //startActivity(new Intent(this, Splash.class));
         setContentView(R.layout.activity_home);
 
         headerResult = new AccountHeaderBuilder()           // 헤더 부분
@@ -50,8 +59,36 @@ public class home extends Activity {
                 .addDrawerItems(
                         home,
                         cart,
+                        logout,
                         new DividerDrawerItem()
                 )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        //check if the drawerItem is set.
+                        //there are different reasons for the drawerItem to be null
+                        //--> click on the header
+                        //--> click on the footer
+                        //those items don't contain a drawerItem
+
+                        if (drawerItem != null) {
+                            Intent intent = null;
+                            if (drawerItem.getIdentifier() == 0) {
+                                intent = new Intent(home.this, RegisterActivity.class);
+                            } else if (drawerItem.getIdentifier() == 1) {
+                                intent = new Intent(home.this, RegisterActivity.class);
+                            } else if (drawerItem.getIdentifier() == 2) {
+                                logoutUser();
+                            }
+
+                            if (intent != null) {
+                                home.this.startActivity(intent);
+                            }
+                        }
+
+                        return false;
+                    }
+                })
 
                 .build();
     }
@@ -76,5 +113,16 @@ public class home extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logoutUser()
+    {
+        session.setLogin(false);
+
+        db.deleteUsers();
+
+        Intent intent = new Intent(home.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
