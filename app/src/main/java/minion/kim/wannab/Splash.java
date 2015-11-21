@@ -2,6 +2,7 @@ package minion.kim.wannab;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -15,12 +16,21 @@ public class Splash extends Activity{
 
 
         Handler hd = new Handler();
-        hd.postDelayed(new Runnable(){
+        hd.postDelayed(new Runnable() {
 
             @Override
-        public void run(){
-                finish();
+            public void run() {
+
             }
-        }, 3000);
+        }, 2000);
+
+        Intent intent = null;
+        intent = new Intent(Splash.this, LoginActivity.class);
+
+        if (intent != null) {
+            Splash.this.startActivity(intent);
+        }
+
+        finish();
     }
 }

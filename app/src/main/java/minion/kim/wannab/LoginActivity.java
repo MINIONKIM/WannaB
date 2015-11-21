@@ -21,12 +21,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-//import info.androidhive.loginandregistration.R;
-//import info.androidhive.loginandregistration.app.AppConfig;
-//import info.androidhive.loginandregistration.app.AppController;
-//import info.androidhive.loginandregistration.helper.SQLiteHandler;
-//import info.androidhive.loginandregistration.helper.SessionManager;
-
 public class LoginActivity extends Activity {
     private static final String TAG = RegisterActivity.class.getSimpleName();
     private Button btnLogin;
@@ -40,7 +34,6 @@ public class LoginActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startActivity(new Intent(this, Splash.class));
         setContentView(R.layout.activity_login);
 
         inputEmail = (EditText) findViewById(R.id.email);
@@ -61,7 +54,7 @@ public class LoginActivity extends Activity {
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity
-            Intent intent = new Intent(LoginActivity.this, home.class);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -142,7 +135,7 @@ public class LoginActivity extends Activity {
 
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
-                                home.class);
+                                MainActivity.class);
                         startActivity(intent);
                         finish();
                     } else {

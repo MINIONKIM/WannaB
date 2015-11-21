@@ -1,25 +1,26 @@
 package minion.kim.wannab;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.*;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 
-public class home extends Activity {
+public class MainActivity extends Activity {
 
     private AccountHeader headerResult = null;
     private Drawer result = null;
@@ -57,8 +58,10 @@ public class home extends Activity {
                 .withActivity(this)
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
+                        new DividerDrawerItem(),
                         home,
                         cart,
+                        new DividerDrawerItem(),
                         logout,
                         new DividerDrawerItem()
                 )
@@ -74,15 +77,17 @@ public class home extends Activity {
                         if (drawerItem != null) {
                             Intent intent = null;
                             if (drawerItem.getIdentifier() == 0) {
-                                intent = new Intent(home.this, RegisterActivity.class);
+                                selectFrag(0);
+                                //intent = new Intent(MainActivity.this, WishlistFragment.class);
                             } else if (drawerItem.getIdentifier() == 1) {
-                                intent = new Intent(home.this, RegisterActivity.class);
+                                selectFrag(0);
+                                //intent = new Intent(MainActivity.this, WishlistFragment.class);
                             } else if (drawerItem.getIdentifier() == 2) {
                                 logoutUser();
                             }
 
                             if (intent != null) {
-                                home.this.startActivity(intent);
+                                MainActivity.this.startActivity(intent);
                             }
                         }
 
@@ -115,13 +120,31 @@ public class home extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void selectFrag(int view){
+        Fragment fr;
+        FragmentManager fm = getFragmentManager();
+
+        if(view == 0){
+            fr = new WishlistFragment();
+        }else {
+            fr = new WishlistFragment();
+        }
+
+        fm.beginTransaction()
+                .replace(R.id.container, fr)
+                .commit();
+        //FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        //fragmentTransaction.replace(R.id.Main, fr);
+        //fragmentTransaction.commit();
+    }
+
     private void logoutUser()
     {
         session.setLogin(false);
 
         db.deleteUsers();
 
-        Intent intent = new Intent(home.this, LoginActivity.class);
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
